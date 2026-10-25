@@ -19,7 +19,14 @@ export async function request(method, path, { tableId, body, signal } = {}) {
   }
   let res
   try {
-    res = await fetch(`/api${path}`, { method, headers, body: body === undefined ? undefined : JSON.stringify(body), signal })
+    const API_BASE = import.meta.env.VITE_API_URL || ''
+
+res = await fetch(`${API_BASE}/api${path}`, {
+  method,
+  headers,
+  body: body === undefined ? undefined : JSON.stringify(body),
+  signal
+})
   } catch (err) {
     if (err.name === 'AbortError') throw err
     throw new ApiError(0, 'network', 'Can’t reach the server. Check your connection.')
